@@ -34,7 +34,7 @@ public class Controller : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         updateBar(_left, "Left");
         updateBar(_right, "Right");
     }
@@ -45,8 +45,20 @@ public class Controller : MonoBehaviour {
         barPosition.z = 0.375f * Input.GetAxis(ControllerName + "_" + controlName + "Y");
         _bars[bar].transform.localPosition = barPosition;
 
-        var barRotation = _bars[bar].transform.localRotation;
-        barRotation.z = Mathf.PI * 0.25f * Input.GetAxis(ControllerName + "_" + controlName + "X");
-        _bars[bar].transform.rotation = barRotation;
+        float targetRotation = 90f * Input.GetAxis(ControllerName + "_" + controlName + "X");
+        //var barRotation = _bars[bar].transform.localRotation;
+        //_bars[bar].
+        var men = GameObject.Find(_bars[bar].name + "Men");
+        if (men == null) return;
+        var menPosition = men.transform.position;
+        var joint = men.GetComponent<HingeJoint>();
+        if (joint != null)
+        {
+            var jointSpring = joint.spring;
+            jointSpring.targetPosition = targetRotation;
+            joint.spring = jointSpring;
+        }
+        //men.transform.position = menPosition;
+        //_bars[bar].transform.rotation = barRotation;
     }
 }

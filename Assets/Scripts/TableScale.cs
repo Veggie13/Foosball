@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TableScale : MonoBehaviour {
@@ -31,7 +32,16 @@ public class TableScale : MonoBehaviour {
             childPosition.x *= TableLength;
             childTransform.localPosition = childPosition;
 
-            foreach (Transform manTransform in childTransform)
+            var men = GameObject.Find(child.name + "Men");
+            if (men == null) continue;
+            men.transform.position = childTransform.position;
+            var menScale = men.transform.localScale;
+            menScale.z = TableWidth;
+            men.transform.localScale = menScale;
+            var menHinge = men.GetComponent<HingeJoint>();
+            menHinge.autoConfigureConnectedAnchor = false;
+            menHinge.connectedAnchor = Vector3.zero;
+            foreach (Transform manTransform in men.transform)
             {
                 if (manTransform.gameObject.name.EndsWith("Rod")) continue;
                 var manScale = manTransform.localScale;
