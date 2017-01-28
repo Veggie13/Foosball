@@ -38,6 +38,7 @@ public class TableScale : MonoBehaviour {
             var menScale = men.transform.localScale;
             menScale.z = TableWidth;
             men.transform.localScale = menScale;
+            men.GetComponent<Rigidbody>().centerOfMass = Vector3.zero;
             var menHinge = men.GetComponent<HingeJoint>();
             menHinge.autoConfigureConnectedAnchor = false;
             menHinge.connectedAnchor = Vector3.zero;
